@@ -109,3 +109,5 @@ acq_params.rx_pos = rx_pos;
 
 bf_params.x = x;
 
+save('speckle_bias_sim.mat','acq_params','rf','rf_raw')
+

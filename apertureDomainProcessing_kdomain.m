@@ -24,12 +24,27 @@ tmp = squeeze(rf_steer(:,:,ii));
 tmp(isnan(tmp)) = 0;
 
 tmpfft = fftshift(fft2(tmp));
-imagesc(abs(tmpfft))
+
+tmpfft(:,1:floor((size(tmpfft,2)/2-3))) = 0;
+tmpfft(:,ceil(size(tmpfft,2)/2+3):end) = 0;
+
+filt_rf(:,:,ii) = abs(ifft2(ifftshift(tmpfft)));
+imagesc(filt_rf(:,:,ii));
 drawnow
 pause
 end
 
+filt_rf(isnan(filt_rf)) = 0;
+rf_steer(isnan(rf_steer)) = 0;
+filt_sum = squeeze(sum(filt_rf,2));
+cont_sum = squeeze(sum(rf_steer,2));
 
+figure
+subplot(211)
+rf2bmode(cont_sum, 80, x, z); colormap jet
+
+subplot(212)
+rf2bmode(filt_sum, 80, x, z); colormap jet
 
 % tmp = fftshift(fft2(squeeze(filt_rf(:,:,ii))));
 % tmp(1:198,:) = 0;

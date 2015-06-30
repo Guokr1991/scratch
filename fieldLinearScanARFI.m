@@ -1,5 +1,6 @@
 sec = 14;
-addpath '~/Documents/MATLAB/field_ii/'
+addpath ~/Documents/MATLAB/field_ii/
+addpath ~/Documents/MATLAB/beamforming/accessory/
 field_init(-1)
 rng(0);
 
@@ -95,8 +96,8 @@ t0 = t0-tshift;
 
 % add noise to rf
 SNR = 60;
-rf_raw{ii} = rf;
-rf{ii} = rf+10^(-SNR/20)*max(rf(:))*randn(size(rf));
+rf_frames{ii} = rf; clear rf
+% rf{ii} = rf+10^(-SNR/20)*max(rf(:))*randn(size(rf));
 end
 xdc_free(rx); xdc_free(tx);
 
@@ -109,5 +110,5 @@ acq_params.rx_pos = rx_pos;
 
 bf_params.x = x;
 
-save('speckle_bias_sim.mat','acq_params','rf','rf_raw')
+save('/getlab/wjl11/scratch/data_files/speckle_bias_phtm.mat','acq_params','bf_params','rf_frames')
 

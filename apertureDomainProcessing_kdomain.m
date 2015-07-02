@@ -3,7 +3,7 @@
 clear all;
 close all;
 clc
-rootpth = '/getlab/wjl11/scratch';
+rootpth = '..';
 addpath([rootpth '/data_files/beamforming/ece582_final_project/'])
 addpath([rootpth '/data_files/beamforming/DR_testdata/'])
 addpath ../beamforming/accessory/
@@ -25,13 +25,15 @@ tmp(isnan(tmp)) = 0;
 
 tmpfft = fftshift(fft2(tmp));
 
-tmpfft(:,1:floor((size(tmpfft,2)/2-3))) = 0;
-tmpfft(:,ceil(size(tmpfft,2)/2+3):end) = 0;
+tmpfft(:,~floor((size(tmpfft,2)/2))) = 0;
 
 filt_rf(:,:,ii) = abs(ifft2(ifftshift(tmpfft)));
-imagesc(filt_rf(:,:,ii));
-drawnow
-pause
+end
+
+for ii = 1:size(filt_rf,3)
+    imagesc(filt_rf(:,:,ii)); caxis([min(filt_rf(:)) max(filt_rf(:))])
+    drawnow
+    pause(0.1)
 end
 
 filt_rf(isnan(filt_rf)) = 0;

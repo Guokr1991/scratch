@@ -1,21 +1,18 @@
 clear all; close all; clc
-load /getlab/wjl11/scratch/data_files/beamforming/wavelet_tmp.mat
+load wavelet_tmp.mat
 
 rcv = double(frame(:,1));
 rcv = interp(rcv,10);
 
-figure
+figure; 
 plot(rcv); title('pre-decomp'); axis tight
-set(gcf,'position',[ 500 500 2000 500])
-wvtype = 'haar';
 
-% F = dbwavf(wvtype);
-% figure; 
-% plot(F); title('wavelet'); axis tight
+wvtype = 'sym4';
 
-size(rcv)
-maxL = wmaxlev(length(rcv),wvtype);
-[C,L] = wavedec(rcv,3,wvtype);
+[cA, cD] = dwt(rcv,wvtype);
 
-figure;
-plot(C(1:L(1))); title('decomp'); axis tight
+figure; hist(cA,100);
+
+figure; hist(cD,100);
+
+cD(find(cD~=0)) = 0;
